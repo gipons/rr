@@ -7,17 +7,17 @@ import { handleInteractionError } from '../../utils/errorHandler.js';
 import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
-        .setName("unban")
-        .setDescription("Unban a user from the server")
+        .setName("unexterminate")
+        .setDescription("Restore a user that was exterminated from the server")
         .addUserOption(option =>
             option
                 .setName("target")
-                .setDescription("The user to unban (can be ID or mention)")
+                .setDescription("The user to restore (can be ID or mention)")
                 .setRequired(true)
         )
         .addStringOption(option =>
             option.setName("reason")
-                .setDescription("Reason for the unban")
+                .setDescription("Reason for the restoration")
                 .setRequired(false)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
@@ -26,10 +26,10 @@ export default {
     async execute(interaction, config, client) {
         const deferSuccess = await InteractionHelper.safeDefer(interaction);
         if (!deferSuccess) {
-            logger.warn(`Unban interaction defer failed`, {
+            logger.warn(`Unexterminate interaction defer failed`, {
                 userId: interaction.user.id,
                 guildId: interaction.guildId,
-                commandName: 'unban'
+                commandName: 'unexterminate'
             });
             return;
         }
@@ -49,17 +49,15 @@ export default {
                 await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         successEmbed(
-                            "✅ User Unbanned",
-                            `Successfully unbanned **${targetUser.tag}** from the server.\n\n**Reason:** ${reason}\n**Case ID:** #${result.caseId}`
+                            "✅ User Restored",
+                            `Successfully restored **${targetUser.tag}** from extermination.\n\n**Reason:** ${reason}\n**Case ID:** #${result.caseId}`
                         )
                     ]
                 });
         } catch (error) {
-            logger.error('Unban command error:', error);
-            await handleInteractionError(interaction, error, { subtype: 'unban_failed' });
+            logger.error('Unexterminate command error:', error);
+            await handleInteractionError(interaction, error, { subtype: 'unexterminate_failed' });
         }
     }
 };
-
-
 
