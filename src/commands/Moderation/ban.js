@@ -7,16 +7,16 @@ import { ModerationService } from '../../services/moderationService.js';
 import { handleInteractionError } from '../../utils/errorHandler.js';
 export default {
     data: new SlashCommandBuilder()
-        .setName("ban")
-        .setDescription("Ban a user from the server")
+        .setName("exterminate")
+        .setDescription("Exterminate a user from the server")
         .addUserOption((option) =>
             option
                 .setName("target")
-                .setDescription("The user to ban")
+                .setDescription("The user to exterminate")
                 .setRequired(true),
         )
         .addStringOption((option) =>
-            option.setName("reason").setDescription("Reason for the ban"),
+            option.setName("reason").setDescription("Reason for the extermination"),
         )
 .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     category: "moderation",
@@ -27,10 +27,10 @@ export default {
             const reason = interaction.options.getString("reason") || "No reason provided";
 
             if (user.id === interaction.user.id) {
-                throw new Error("You cannot ban yourself.");
+                throw new Error("You cannot exterminate yourself.");
             }
             if (user.id === client.user.id) {
-                throw new Error("You cannot ban the bot.");
+                throw new Error("You cannot exterminate the bot.");
             }
 
             
@@ -44,17 +44,16 @@ export default {
             await InteractionHelper.universalReply(interaction, {
                 embeds: [
                     successEmbed(
-                        `🚫 **Banned** ${user.tag}`,
+                        `💀 **Exterminated** ${user.tag}`,
                         `**Reason:** ${reason}\n**Case ID:** #${result.caseId}`,
                     ),
                 ],
+                content: `🎯 User @${user.username} has been exterminated by Sahur.\nhttps://cdn.discordapp.com/attachments/1510663545887658186/1510696613633458206/petpet.gif?ex=6a1dc15c&is=6a1c6fdc&hm=f52f6b12e4858f0ad16d2cbd63191f64e7bc5cea596e775e22f6d6a1dd53f6ec`,
             });
         } catch (error) {
-            logger.error('Ban command error:', error);
-            await handleInteractionError(interaction, error, { subtype: 'ban_failed' });
+            logger.error('Exterminate command error:', error);
+            await handleInteractionError(interaction, error, { subtype: 'exterminate_failed' });
         }
     },
 };
-
-
 
