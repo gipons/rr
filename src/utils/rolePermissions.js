@@ -5,6 +5,9 @@ const ALLOWED_ROLE_IDS = [
     '1518678662566903899'
 ];
 
+// Bot owner user ID - can bypass role restrictions
+const BOT_OWNER_ID = '243636252618915840';
+
 /**
  * Check if a user has one of the allowed roles
  * @param {Member} member - Discord member object
@@ -25,7 +28,8 @@ export function hasAllowedRole(member) {
  * @returns {boolean} - True if user is bot owner
  */
 export function isBotOwner(user, client) {
-    return user.id === client.config?.bot?.ownerId;
+    // Check against both the config and the hardcoded owner ID
+    return user.id === client.config?.bot?.ownerId || user.id === BOT_OWNER_ID;
 }
 
 /**
