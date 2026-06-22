@@ -52,7 +52,7 @@ export default {
 
             // Send disintegration message with funny webhook message
             await interaction.channel.send({
-                content: `💀 **DISINTEGRATION ALERT** 💀\n${user.username} got disintegrated!\n\nhttps://cdn.discordapp.com/attachments/1510663545887658186/1510696613633458206/petpet.gif?ex=6a1dc15c&is=6a1c6fdc&hm=f52f6b12e4858f0ad16d2cbd63191f64e7bc5cea596e775e22f6d6a1dd53f6ec`,
+                content: ` **nigga got disintegrated** \n${user.username} got disintegrated!\n\nhttps://cdn.discordapp.com/attachments/1273780603707199618/1274439574940291124/lowquality1723920463125.gif?ex=6a3ad4d8&is=6a398358&hm=b5ae9dcb1765af0a9a3b2e1985704e2c315805c700011b3e04293842a54910de&`,
             });
         } catch (error) {
             logger.error('Disintegrate command error:', error);
