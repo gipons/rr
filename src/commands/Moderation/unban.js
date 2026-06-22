@@ -7,8 +7,8 @@ import { handleInteractionError } from '../../utils/errorHandler.js';
 import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
-        .setName("unexterminate")
-        .setDescription("Restore a user that was exterminated from the server")
+        .setName("undisintegrate")
+        .setDescription("Restore a user that was disintegrated from the server")
         .addUserOption(option =>
             option
                 .setName("target")
@@ -26,10 +26,10 @@ export default {
     async execute(interaction, config, client) {
         const deferSuccess = await InteractionHelper.safeDefer(interaction);
         if (!deferSuccess) {
-            logger.warn(`Unexterminate interaction defer failed`, {
+            logger.warn(`Undisintegrate interaction defer failed`, {
                 userId: interaction.user.id,
                 guildId: interaction.guildId,
-                commandName: 'unexterminate'
+                commandName: 'undisintegrate'
             });
             return;
         }
@@ -50,14 +50,13 @@ export default {
                     embeds: [
                         successEmbed(
                             "✅ User Restored",
-                            `Successfully restored **${targetUser.tag}** from extermination.\n\n**Reason:** ${reason}\n**Case ID:** #${result.caseId}`
+                            `Successfully restored **${targetUser.tag}** from disintegration.\n\n**Reason:** ${reason}\n**Case ID:** #${result.caseId}`
                         )
                     ]
                 });
         } catch (error) {
-            logger.error('Unexterminate command error:', error);
-            await handleInteractionError(interaction, error, { subtype: 'unexterminate_failed' });
+            logger.error('Undisintegrate command error:', error);
+            await handleInteractionError(interaction, error, { subtype: 'undisintegrate_failed' });
         }
     }
 };
-
