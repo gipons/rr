@@ -9,6 +9,7 @@ import { InteractionHelper } from '../utils/interactionHelper.js';
 import { createInteractionTraceContext, runWithTraceContext } from '../utils/traceContext.js';
 import { validateChatInputPayloadOrThrow } from '../utils/commandInputValidation.js';
 import { enforceAbuseProtection, formatCooldownDuration } from '../utils/abuseProtection.js';
+import { validateCommandAccess } from '../utils/rolePermissions.js';
 
 function withTraceContext(context = {}, traceContext = {}) {
   return {
@@ -55,6 +56,20 @@ export default {
                 'Sorry, that command does not exist.',
                 withTraceContext({ commandName: interaction.commandName }, interactionTraceContext)
               );
+            }
+
+            // Check role-based access control
+            const accessError = validateCommandAccess(interaction, client);
+            if (accessError) {
+              const embed = {
+                title: accessError.title,
+                description: accessError.description,
+                color: accessError.color
+              };
+              return await InteractionHelper.safeReply(interaction, { 
+                embeds: [embed], 
+                flags: MessageFlags.Ephemeral 
+              });
             }
 
             const abuseProtection = await enforceAbuseProtection(interaction, command, interaction.commandName);
