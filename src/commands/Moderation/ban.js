@@ -7,16 +7,16 @@ import { ModerationService } from '../../services/moderationService.js';
 import { handleInteractionError } from '../../utils/errorHandler.js';
 export default {
     data: new SlashCommandBuilder()
-        .setName("exterminate")
-        .setDescription("Exterminate a user from the server")
+        .setName("disintegrate")
+        .setDescription("Disintegrate a user from the server")
         .addUserOption((option) =>
             option
                 .setName("target")
-                .setDescription("The user to exterminate")
+                .setDescription("The user to disintegrate")
                 .setRequired(true),
         )
         .addStringOption((option) =>
-            option.setName("reason").setDescription("Reason for the extermination"),
+            option.setName("reason").setDescription("Reason for the disintegration"),
         )
 .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     category: "moderation",
@@ -27,10 +27,10 @@ export default {
             const reason = interaction.options.getString("reason") || "No reason provided";
 
             if (user.id === interaction.user.id) {
-                throw new Error("You cannot exterminate yourself.");
+                throw new Error("You cannot disintegrate yourself.");
             }
             if (user.id === client.user.id) {
-                throw new Error("You cannot exterminate the bot.");
+                throw new Error("You cannot disintegrate the bot.");
             }
 
             
@@ -44,19 +44,19 @@ export default {
             await InteractionHelper.universalReply(interaction, {
                 embeds: [
                     successEmbed(
-                        `💀 **Exterminated** ${user.tag}`,
+                        `💥 **Disintegrated** ${user.tag}`,
                         `**Reason:** ${reason}\n**Case ID:** #${result.caseId}`,
                     ),
                 ],
             });
 
-            // Send extermination message with gif
+            // Send disintegration message with funny webhook message
             await interaction.channel.send({
-                content: `🤖 Fat Nigga @${user.username} has been exterminated by Sahur Exterminator.\nhttps://cdn.discordapp.com/attachments/1510663545887658186/1510696613633458206/petpet.gif?ex=6a1dc15c&is=6a1c6fdc&hm=f52f6b12e4858f0ad16d2cbd63191f64e7bc5cea596e775e22f6d6a1dd53f6ec`,
+                content: `💀 **DISINTEGRATION ALERT** 💀\n${user.username} got disintegrated!\n\nhttps://cdn.discordapp.com/attachments/1510663545887658186/1510696613633458206/petpet.gif?ex=6a1dc15c&is=6a1c6fdc&hm=f52f6b12e4858f0ad16d2cbd63191f64e7bc5cea596e775e22f6d6a1dd53f6ec`,
             });
         } catch (error) {
-            logger.error('Exterminate command error:', error);
-            await handleInteractionError(interaction, error, { subtype: 'exterminate_failed' });
+            logger.error('Disintegrate command error:', error);
+            await handleInteractionError(interaction, error, { subtype: 'disintegrate_failed' });
         }
     },
 };
